@@ -5,6 +5,13 @@
 /* -------------------------- */
 
 $time_stamp = "";
+$tmpName = "";
+$uploadDir = "";
+$fileType = "";
+
+// Error stuff
+$errorsOccur = 0;
+$uploadError = "";
 
 
 
@@ -18,6 +25,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	/* ------------------ */
 	/*  START VALIDATION  */
 	/* ------------------ */
+
+	// Setup the upload for the file
+	// Check if file was uploaded
+	if (isset($_POST['submit_files'])) {
+
+		// Set upload dir
+		$tmpName = $_FILES['upload_file']['tmp_name'];
+		$uploadDir = './uploads/' . $_FILES['upload_file']['name'];
+		$fileType = $_FILES['upload_file']['type'];
+
+		// Make sure uploads directory is created
+	    mkdir('./uploads');
+
+	    // Check if file is empty
+	    if(filesize($tmpName) == 0) {
+	    	$uploadError = "Could not upload, File empty";
+	    	$errorsOccur++;
+	    }
+
+	    // Check if file is not a text file
+	    if ($fileType != 'text/plain') {
+	    	if(!empty($uploadError)) {
+	    		$uploadError = $uploadError . " and File is not a .txt file";
+	    	} else {
+	    		$uploadError = "Could not upload, File is not a .txt file";
+	    	}
+	    	$errorsOccur++;
+	    }
+    }
+
 
 	/* ---------------- */
 	/*  END VALIDATION  */
@@ -33,21 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$errorsOnPage = "There are {$errorsOccur} error(s) on the page";
 	} else { // Validation passes
 
-		// Upload the file
+		// Setup the upload for the file
 		// Check if file was uploaded
 		if (isset($_POST['submit_files'])) {
-
-			// Set upload dir
-			$tmpName = $_FILES['upload_file']['tmp_name'];
-			$uploadDir = './uploads/' . $_FILES['upload_file']['name'];
-
-			// Make sure uploads directory is created
-		    mkdir('./uploads');
-
-		    // Upload the file
+		    // Upload the file by moving it from /tmp/ to /uploads/
 		    move_uploaded_file($tmpName, $uploadDir);
-
-		    print_r($_FILES);
 	    }
 
 		// Unhide results area
@@ -75,14 +102,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			<h1> File Upload and Manipulation </h1>
 
 			<div id="upload" <?php if(!empty($uploadError)) { echo 'class="errorOutline"'; } ?>>
-				<p><label for="upload_field">Upload a File</label></p>
+				<p><label for="upload_file">Upload a File</label></p>
 				<input type="file" id="upload_file" name="upload_file"><br>
 				<span class="error"><?php echo $uploadError ?></span><br>
 			</div>
 
 			<input type="submit" name="submit_files" value="Submit Files" id="btn">
-			<br><span class="error"><?php echo $someEmptyError ?></span><br>
-			<span class="error"><?php echo $errorsOnPage ?></span>
+			<br><span class="error"><?php echo $errorsOnPage ?></span>
 		</form>
 	</div>
 

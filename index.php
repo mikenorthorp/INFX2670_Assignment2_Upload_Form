@@ -8,10 +8,14 @@ $time_stamp = "";
 $tmpName = "";
 $uploadDir = "";
 $fileType = "";
+$splitFileName = "";
+$resultsView = "display:none";
+$fullyValidated = 0;
 
 // Error stuff
 $errorsOccur = 0;
 $uploadError = "";
+$uploadTime = "";
 
 
 
@@ -30,9 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	// Check if file was uploaded
 	if (isset($_POST['submit_files'])) {
 
-		// Set upload dir
+		// Grab the location of the tmp uploaded file
 		$tmpName = $_FILES['upload_file']['tmp_name'];
-		$uploadDir = './uploads/' . $_FILES['upload_file']['name'];
+
+		// Divides up the path name for the file to assign it a unique name based on time
+		$splitFileName = pathinfo($_FILES['upload_file']['name']);
+
+		// Set upload time
+		$uploadTime = microtime(true);
+
+		// Set upload dir, and add in the upload time to make it unique, as well as -original
+		$uploadDir = './uploads/' . $splitFileName['filename'] . '_' . $uploadTime . '-original.' . $splitFileName['extension'];
+
+		// Gets the file type of the file
 		$fileType = $_FILES['upload_file']['type'];
 
 		// Make sure uploads directory is created
@@ -114,6 +128,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 	<div id="results" style="<?php echo $resultsView ?>">
 		<h1>File Upload</h1>
+		<?php if($fullyValidated == 1) : ?>
+			<div id="file_output">
+				<?php 
+				echo $uploadDir;
+				nl2br(file_get_contents($uploadDir)); 
+				?>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<div id="archive">

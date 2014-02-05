@@ -90,3 +90,18 @@ form {
 	margin: 0 -15px 15px;
 	border-style: solid;
 }
+
+/* Archive styles, same as form style */
+#archive {
+	margin-left: 0;
+	margin-right: 0;
+	background-color: #fff;
+	border-width: 1px;
+	border-color: #ddd;
+	border-radius: 4px 4px 0 0;
+	box-shadow: none;
+	position: relative;
+	padding: 45px 15px 15px;
+	margin: 0 -15px 15px;
+	border-style: solid;
+}

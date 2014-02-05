@@ -4,6 +4,8 @@
 /* START VARIABLE DECLERATION */
 /* -------------------------- */
 
+$time_stamp = "";
+
 
 
 /* -------------------------- */
@@ -13,8 +15,6 @@
 // If a post request is submitted, santize user input fields for the form
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
-
 	/* ------------------ */
 	/*  START VALIDATION  */
 	/* ------------------ */
@@ -32,15 +32,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	if ($errorsOccur > 0) {
 		$errorsOnPage = "There are {$errorsOccur} error(s) on the page";
 	} else { // Validation passes
+
+		// Upload the file
+		// Check if file was uploaded
+		if (isset($_POST['submit_files'])) {
+
+			// Set upload dir
+			$tmpName = $_FILES['upload_file']['tmp_name'];
+			$uploadDir = './uploads/' . $_FILES['upload_file']['name'];
+
+			// Make sure uploads directory is created
+		    mkdir('./uploads');
+
+		    // Upload the file
+		    move_uploaded_file($tmpName, $uploadDir);
+
+		    print_r($_FILES);
+	    }
+
 		// Unhide results area
 		$resultsView = "";
 		$fullyValidated = 1;
-
-		// Write contents to file, append if already data inside, and lock file from being changed while writing
-		// Make sure unicode characters dont get printed
-		file_put_contents(RESULTS_FILE, htmlspecialchars_decode($content), FILE_APPEND | LOCK_EX);
-		// Make sure it is readable by all users
-		chmod(RESULTS_FILE, 0644);
 	}
 
 	/* -------------------------- */
@@ -59,16 +71,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 <div id="content">
 	<h1> INFX 2670 Assignment 2 - Michael Northorp </h1>
 	<div id="form">
-		<form method="post">
+		<form method="post" enctype="multipart/form-data">
 			<h1> File Upload and Manipulation </h1>
 
 			<div id="upload" <?php if(!empty($uploadError)) { echo 'class="errorOutline"'; } ?>>
-				<p><label for="upload_field">Name</label></p>
-				<input type="text" id="upload_field" name="upload_field"><br>
+				<p><label for="upload_field">Upload a File</label></p>
+				<input type="file" id="upload_file" name="upload_file"><br>
 				<span class="error"><?php echo $uploadError ?></span><br>
 			</div>
 
-			<input type="submit" value="Submit" id="btn">
+			<input type="submit" name="submit_files" value="Submit Files" id="btn">
 			<br><span class="error"><?php echo $someEmptyError ?></span><br>
 			<span class="error"><?php echo $errorsOnPage ?></span>
 		</form>

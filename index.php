@@ -11,6 +11,7 @@ $fileType = "";
 $splitFileName = "";
 $resultsView = "display:none";
 $fullyValidated = 0;
+$uploadDirModified = "";
 
 // Error stuff
 $errorsOccur = 0;
@@ -89,7 +90,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		if (isset($_POST['submit_files'])) {
 		    // Upload the file by moving it from /tmp/ to /uploads/
 		    move_uploaded_file($tmpName, $uploadDir);
+		    chmod($uploadDir, 0644);
 	    }
+
+
+	    // Start string manipulation on file
+	    $fileContent = file_get_contents($uploadDir);
+
+	    // Check for phone number formatting
+
+	    // Check for <script> tags
+	    str_replace('<script>', '', $fileContent);
+	    str_replace('</script>', '', $fileContent);
+
+	    // Check for urls and properly format them into hyper links
+
+	    // Count number of words start with t and and with e in the file and add to end of file
+
+	    // Save the file as a modified version of file to uploads directory
+	    $uploadDirModified = './uploads/' . $splitFileName['filename'] . '_' . $uploadTime . '-modified.' . $splitFileName['extension'];
+	    file_put_contents($uploadDirModified, $fileContent, FILE_APPEND | LOCK_EX);
+		chmod($uploadDirModified, 0644);
+
 
 		// Unhide results area
 		$resultsView = "";
@@ -130,10 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		<h1>File Upload</h1>
 		<?php if($fullyValidated == 1) : ?>
 			<div id="file_output">
-				<?php 
-				echo $uploadDir;
-				nl2br(file_get_contents($uploadDir)); 
-				?>
+				<?php echo nl2br(file_get_contents($uploadDirModified)); ?>
 			</div>
 		<?php endif; ?>
 	</div>

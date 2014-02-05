@@ -100,12 +100,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	    // Check for phone number formatting
 
 	    // Check for <script> tags
-	    str_replace('<script>', '', $fileContent);
-	    str_replace('</script>', '', $fileContent);
+	    $fileContent = str_replace('<script>', '', $fileContent);
+	    $fileContent = str_replace('</script>', '', $fileContent);
 
 	    // Check for urls and properly format them into hyper links
+		// ftp://ftp.is.co.za/rfc/rfc1808.txt
+		
+		// http://www.ietf.org/rfc/rfc2396.txt
+		// ldap://[2001:db8::7]/c=GB?objectClass?one
+		// mailto:John.Doe@example.com
+		// news:comp.infosystems.www.servers.unix
+		// tel:+1-816-555-1212
+		// telnet://192.0.2.16:80/
+		// urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
 	    // Count number of words start with t and and with e in the file and add to end of file
+	    // $fileContent = preg_replace($pattern, $replacement, $fileContent);
 
 	    // Save the file as a modified version of file to uploads directory
 	    $uploadDirModified = './uploads/' . $splitFileName['filename'] . '_' . $uploadTime . '-modified.' . $splitFileName['extension'];

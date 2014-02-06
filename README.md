@@ -3,6 +3,7 @@ README
 
 README and code base best viewed on [Github](https://github.com/mikenorthorp/INFX2670_Assignment2_Upload_Form)
 
+You can view the live site here [https://web.cs.dal.ca/~northorp/infx2670_a2/](https://web.cs.dal.ca/~northorp/infx2670_a2/)
 
 This is an assignment for my Server Side Scripting class INFX2670 Assignment 2
 

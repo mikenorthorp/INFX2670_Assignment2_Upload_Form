@@ -110,7 +110,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		    // Start string manipulation on file
 		    $fileContent = file_get_contents($uploadDir);
 
-		    // Check for phone number formatting
+		    // Check for phone number formatting and put in format 902-555-5555
+		    // must fix 902-555-5555, (902) 555-5555, 902.555.5555 or 555-5555
+
+		    // Matches (902) 555-5555
+		    $pattern = "/(\(([1-9]{1}[0-9]{2})\)\s?)([0-9]{3})\-([0-9]{4})/";
+		    // Format xxx-xxx-xxxx
+		    $replacement = '<em>${2}-${3}-${4}</em>';
+		    $fileContent = preg_replace($pattern, $replacement, $fileContent);
+
+		    // Matches 902-555-555 or 902.555.5555
+		    $pattern = "/([1-9]{1}[0-9]{2})(\-|\.)([0-9]{3})(\-|\.)([0-9]{4})/";
+		    // Format xxx-xxx-xxxx
+		    $replacement = '<em>${1}-${3}-${5}</em>';
+		    $fileContent = preg_replace($pattern, $replacement, $fileContent);
+
+		    // Matches 902-555-555 or 902.555.5555
+		    $pattern = "/\s([0-9]{3})(\-|\.)([0-9]{4})/";
+		    // Format xxx-xxx-xxxx
+		    $replacement = '<em>902-${1}-${3}</em>';
+		    $fileContent = preg_replace($pattern, $replacement, $fileContent);
 
 		    // Check for <script> tags
 		    $fileContent = str_replace('<script>', '', $fileContent);
@@ -118,14 +137,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 		    // Check for urls and properly format them into hyper links
 			// ftp://ftp.is.co.za/rfc/rfc1808.txt
-
 			// http://www.ietf.org/rfc/rfc2396.txt
 			// ldap://[2001:db8::7]/c=GB?objectClass?one
 			// mailto:John.Doe@example.com
 			// news:comp.infosystems.www.servers.unix
-			// tel:+1-816-555-1212
 			// telnet://192.0.2.16:80/
 			// urn:oasis:names:specification:docbook:dtd:xml:4.1.2
+
+		    $pattern = '/[a-z]+:\/\/(.*)/';
+		    $replacement = '<a href="${1}">${1}</a>';
+		    preg_match_all($pattern, $fileCon, $matches);
+		    print_r($matches);
+		    preg_replace($pattern, $replacement, $fileContent);
 
 		    // Count number of words start with t and and with e in the file and add to end of file
 		    $pattern = '/\bt\w+?e\b/';

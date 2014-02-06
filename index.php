@@ -4,14 +4,19 @@
 /* START VARIABLE DECLERATION */
 /* -------------------------- */
 
+// File paths, names and times
 $time_stamp = "";
 $tmpName = "";
 $uploadDir = "";
+$uploadDirModified = "";
 $fileType = "";
 $splitFileName = "";
+
+// Output checks
 $resultsView = "display:none";
 $fullyValidated = 0;
-$uploadDirModified = "";
+
+// Regex wordcount
 $wordCount = 0;
 
 
@@ -80,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	    	} else {
 	    		$uploadError = "Could not upload, File is not a .txt file";
 	    	}
+	    	// Add to errors
 	    	$errorsOccur++;
 	    }
     }
@@ -105,7 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		    // Upload the file by moving it from /tmp/ to /uploads/
 		    move_uploaded_file($tmpName, $uploadDir);
 		    chmod($uploadDir, 0644);
-
 
 		    // Start string manipulation on file
 		    $fileContent = file_get_contents($uploadDir);
@@ -219,7 +224,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				<td><strong>Date Modified</strong></td>
 				<td><strong>Delete File</strong></td>
 				<?php 
-
 				// Example modified from PHP.net docs for read
 				if ($handle = opendir('./uploads')) {
 				    // Loop over directory while entries are found
@@ -239,7 +243,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 			    // Close the readdir handle
 			    closedir($handle);
-
 		    	?>
 	    	</table>
     	</form>

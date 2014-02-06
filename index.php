@@ -125,8 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			// telnet://192.0.2.16:80/
 			// urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
+			//$fileContent = preg_replace($pattern, $replacement, $fileContent);
+			$pattern =  '/\bt[^\b]*?e\b/';
+			preg_match_all($pattern, $fileContent, $matches);
+		    print_r($matches);
+
 		    // Count number of words start with t and and with e in the file and add to end of file
-		    // $fileContent = preg_replace($pattern, $replacement, $fileContent);
+		    $pattern =  '/\bt\w+?e\b/';
+		    preg_match_all($pattern, $fileContent, $matches);
+		    print_r($matches);
 
 		    // Save the file as a modified version of file to uploads directory
 		    $uploadDirModified = './uploads/' . $splitFileName['filename'] . '_' . $uploadTime . '-modified.' . $splitFileName['extension'];

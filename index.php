@@ -144,11 +144,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			// telnet://192.0.2.16:80/
 			// urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
-		    $pattern = '/[a-z]+:\/\/(.*)/';
+		    $pattern = '/([a-z]+:\/\/(.*))\s/';
 		    $replacement = '<a href="${1}">${1}</a>';
-		    preg_match_all($pattern, $fileCon, $matches);
+		    preg_match_all($pattern, $fileContent, $matches);
 		    print_r($matches);
-		    preg_replace($pattern, $replacement, $fileContent);
+		    $fileContent = preg_replace($pattern, $replacement, $fileContent);
 
 		    // Count number of words start with t and and with e in the file and add to end of file
 		    $pattern = '/\bt\w+?e\b/';

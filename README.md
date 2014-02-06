@@ -9,7 +9,7 @@ This is an assignment for my Server Side Scripting class INFX2670 Assignment 2
 It is a web form with an upload field. It allows the user to upload a text file, then runs various modifcations on the
 file, like making sure phone numbers are formatted, `<script>` tags are removed, and only text files are accepted.
 It also shows files uploaded and their modified versions, as well as a delete button to remove these files
-from the web server.
+from the web server. Regex is performed to check for phone numbers, word counting, and url wrapping.
 
 Requirements
 ------------
@@ -29,6 +29,8 @@ Making the Website Do Things
 ----------------------------
 
 1. Upload a file using the field
+2. See output that gets modified via regex
+3. Delete uploaded files using delete button
 
 
 Citations

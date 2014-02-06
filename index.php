@@ -144,10 +144,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			// telnet://192.0.2.16:80/
 			// urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
-		    $pattern = '/([a-z]+:\/\/(.*))\s/';
+		    $pattern = '/((ftp|http|mailto|news|telnet|urn|ldap|https|tel)+:(\S+?))[ ,;\s]/';
+		    // Replaces matches with href tags wrapped around them
 		    $replacement = '<a href="${1}">${1}</a>';
-		    preg_match_all($pattern, $fileContent, $matches);
-		    print_r($matches);
+
+		    // Wrap all urls with href tag
 		    $fileContent = preg_replace($pattern, $replacement, $fileContent);
 
 		    // Count number of words start with t and and with e in the file and add to end of file

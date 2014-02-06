@@ -61,6 +61,17 @@ form {
 	border-style: solid;
 }
 
+.btn {
+  display: block;
+  background: red;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 /* Error styles */
 .error {
 	color: red;

@@ -1,10 +1,12 @@
 <?php
 
+// Example download code modified from class
+$file = './uploads/' . $_GET['file'];
 
-$file = $_POST['file'];
-
+// Check if file exists
 if (file_exists($file)) {
 
+    // Set all headers for download, and download the file.
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename='.basename($file));

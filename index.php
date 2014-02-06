@@ -12,6 +12,8 @@ $splitFileName = "";
 $resultsView = "display:none";
 $fullyValidated = 0;
 $uploadDirModified = "";
+$wordCount = 0;
+
 
 // Error stuff
 $errorsOccur = 0;
@@ -128,7 +130,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		    // Count number of words start with t and and with e in the file and add to end of file
 		    $pattern = '/\bt\w+?e\b/';
 		    preg_match_all($pattern, $fileContent, $matches);
-		    print_r(count($matches[0]));
+		    $wordCount = count($matches[0]);
+
+		    // Append count to end of file
+		    $fileContent .= "\n" . $wordCount;
 
 		    // Save the file as a modified version of file to uploads directory
 		    $uploadDirModified = './uploads/' . $splitFileName['filename'] . '_' . $uploadTime . '-modified.' . $splitFileName['extension'];
